@@ -1,0 +1,16 @@
+{
+  "name": "comp_backend",
+  "version": "1.0.0",
+  "description": "complete backend by cpmaurya",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "\"javaScipt\"",
+    "\"backend\""
+  ],
+  "author": "Cpmaurya",
+  "license": "ISC"
+}
+ 
