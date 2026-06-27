@@ -6,6 +6,9 @@ import { ApiResponse } from "../utils/ApiResponce.js";
 
 
 const registerUser = asyncHandler(async (req,res)=>{
+    console.log("req.files =", req.files);
+console.log("req.body =", req.body);
+
 
     // get user details from frontend
     const {fullname, email,username,password }=req.body
@@ -24,26 +27,40 @@ const registerUser = asyncHandler(async (req,res)=>{
         }
 
         //check if user already exist : by username , email
-        const existedUser =User.findOne({
+        const existedUser = await User.findOne({
             $or:[{ username },{ email }]
         })
         if(existedUser){
             throw new ApiError(409,"User with email or username already exists ")
         }
-        const  avatarLocalPath =req.files?.avatar[0]?.path;
+      
+        const avatarLocalPath = req.files?.avatar?.[0]?.path;
+       
 
-        const coverImageLocalPath=req.files?.coverImage[0]?.path;
+// const coverImageLocalPath = req.files?.coverImage?.[0]?.path;
+let coverImageLocalPath;
+if(req.files && Array.isArray(req.files.coverImage) &&req.files.coverImage.length>0){
+     coverImageLocalPath = req.files.coverImage[0].path;
+}
+
   //chck for image .check for avtar
-
-
-        if(!avatarLocalPath){
+    if(!avatarLocalPath){
             throw new ApiError(400, "Avatar file is required")
         }
+     
+
+
+      
 
          //uplode them to cloudinary, avtar
 
       const avatar=  await uploadOnCloudinary(avatarLocalPath);
+      console.log("Avatar object:", avatar);
+console.log("Avatar URL:", avatar?.url);
+console.log("Avatar Secure URL:", avatar?.secure_url);
     const coverImage =  await uploadOnCloudinary(coverImageLocalPath)
+
+   
       
      if(!avatar){
             throw new ApiError(400, "Avatar file is required")
@@ -75,14 +92,6 @@ const registerUser = asyncHandler(async (req,res)=>{
 
 
    } )
-
-    
-  
-   
-   
-   
-   
- 
 
 
   
