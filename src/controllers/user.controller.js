@@ -199,7 +199,7 @@ console.log("DB Password:", user?.password);
     const incomingRefreshToken =req.cookies.refreshAccessToken || req.body.refreshToken
 
 
-     if(incomingRefreshToken){
+     if(!incomingRefreshToken){
     throw new ApiError(401,"unauthorized request")
    }
 
